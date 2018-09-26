@@ -85,7 +85,7 @@ public class GraphBuilderTest {
 
 The above example generates output such as:
 
-```text
+```xml
 please find places to eat located in <city>new york</city>
 greeting restaurants near my home
 hello find where to eat near my home
