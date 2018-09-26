@@ -1,0 +1,46 @@
+# declaring external functions
+declare city(string);
+declare time();
+
+# group declaration with default label "restaurant"
+# group can have one or more entries that generator chooses by random
+# entry can contain static strings in quotes or dynamically evaluated values
+# you can assign a probability to dynamic value i.g. ${greet[0.5]} will occur only half of the times
+findRestaurants:"restaurant" {
+  ${greet[0.5]} ${"please"[0.2]} ${"find"[0.5]} ${restaurants} ${place} ${time[0.2]};
+  "i'm" ${"very"[0.05]} "hungry at" ${city(null)}[0.1];
+}
+
+# you can boost or decrease probability of an entry
+# i.g. ${located} ${city("usa")}[2] is 2 times more probable than other options
+place {
+  ${located} ${city("usa")}[2];
+  ${located} ${city("europe")};
+  "near my home";
+  "close to me";
+}
+
+located {
+  "in";
+  "in the area of";
+  "located in";
+}
+
+greet {
+  "hey";
+  "hi";
+  "hello";
+  "greeting";
+}
+
+restaurants {
+  "restaurants";
+  "places to eat";
+  "where to eat";
+}
+
+time {
+  "that opens" ${"at noon":"opening_time"}[0.1];
+  "opening at" ${time():"opening_time"};
+  "open until" ${time():"closing_time"};
+}
