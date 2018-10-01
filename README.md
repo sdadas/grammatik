@@ -6,7 +6,7 @@ A library for language generation for NLP tasks such as chatbots, sequence taggi
 
 Create a grammar file defininig a set of rules for the language generator. 
 
-```python
+```markdown
 # declaring external functions
 declare city(string);
 declare time();
