@@ -1,8 +1,29 @@
 ## Grammatik
 
-A library for language generation for NLP tasks such as chatbots, sequence tagging, text classification, information extracttion etc.
+A library for language generation for NLP tasks such as chatbots, sequence tagging, text classification, information extraction etc. Tools similar to Grammatik already exist (i.g. [Chatito](https://github.com/rodrigopivi/Chatito)). However, this library is intended for more advanced use cases, with the ability to write custom extensions for the grammar and with a strict control of probability of generated text fragments.
 
-#### How to use
+### Dependency
+
+Currently, you can declare this library as a maven / gradle / sbt dependency directly from github using [JitPack.io](https://jitpack.io/) serivce. Add JitPack to your project repositories:
+
+```xml
+<repository>
+  <id>jitpack.io</id>
+  <url>https://jitpack.io</url>
+</repository>
+```
+
+Next, add a dependency to the tagged release on github:
+
+```xml
+<dependency>
+  <groupId>com.github.sdadas</groupId>
+  <artifactId>grammatik</artifactId>
+  <version>0.1</version>
+</dependency>
+```
+
+### Usage
 
 Create a grammar file defininig a set of rules for the language generator. 
 
@@ -98,3 +119,20 @@ please restaurants in the area of <city>new york</city>
 places to eat close to me
 (...)
 ```
+
+### Features
+
+#### Function declarations and bindings
+
+You can declare an external function in the grammar using `declare` statement e.g. `declare personName(string,number);`. Three types of arguments are supported: `string`, `boolean`, and `number`  that correspond to `String`, `Boolean` and various numeric Java classes - in the case of `number`, an argument can be converted to `Integer`, `Long`, `Short`, `BigDecimal`, `BigInteger`, `Double`, `Float` or `Byte`. Any declared function can be invoked inside entry definition e.g. `"hi, my name is" ${personName("firstName", 123)};`. In order to use the grammar with functions, one needs to register function binding in Java before creating a sample generator. Either method name or lambda expression may be passed as a binding.
+
+```java
+GraphBuilder builder = GraphBuilder.read(is);
+builder.registerMethod(context, "myMethod", "personName", String.class, Double.class);
+```
+
+Where `context` is the object on which the method will be invoked, `"myMethod"` is the name of the method, `"personName"` is the name of function declared in the grammar. Last two params are the real argument types for the method.
+
+#### Controlling probability
+
+A fine-grained control of generation probabilities is possible in Grammatik. When probability is used inside entry definition e.g. `${greet[0.5]}`, it allows to include the `greet` fragment optionally, with a probability of 0.5. One can define a probability multiplier at the end of an entry e.g. `${located} ${city("usa")}[2];`. In this case, it applies to the probability of chosing this entry in relation to other entries in the same group. Each entry in a group has a sample weight of 1, using a multiplier of [2] means that this entry will be sampled two times as often as any other entry. Likewisie, using a multiplier of [0.1] means that the entry is ten times less probable than other entries.
