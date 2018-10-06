@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Text implements Serializable {
@@ -20,6 +21,14 @@ public class Text implements Serializable {
 
     public static Text of(String value, String label) {
         return new Text(value, label);
+    }
+
+    public static TextBuilder builder(TextFragment... values) {
+        return new TextBuilder(values);
+    }
+
+    public static TextBuilder builder(Collection<TextFragment> values) {
+        return new TextBuilder(values);
     }
 
     public Text() {
