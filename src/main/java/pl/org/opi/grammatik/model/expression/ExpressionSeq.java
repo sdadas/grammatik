@@ -1,5 +1,6 @@
 package pl.org.opi.grammatik.model.expression;
 
+import org.apache.commons.lang3.ObjectUtils;
 import pl.org.opi.grammatik.model.output.Text;
 import pl.org.opi.grammatik.model.output.TextFragment;
 import pl.org.opi.grammatik.utils.RandomUtils;
@@ -42,7 +43,11 @@ public class ExpressionSeq extends ExpressionBase {
     private Stream<TextFragment> fragments(Text parent) {
         List<TextFragment> fragments = parent.getFragments();
         if(fragments.isEmpty()) return Stream.empty();
-        if(fragments.size() == 1) return Stream.of(new TextFragment(parent.getLabel(), fragments.get(0).getValue()));
+        if(fragments.size() == 1) {
+            TextFragment fragment = fragments.get(0);
+            String label = ObjectUtils.firstNonNull(fragment.getLabel(), parent.getLabel());
+            return Stream.of(new TextFragment(label, fragment.getValue()));
+        }
         return fragments.stream().map(fragment -> {
             if(fragment.getLabel() == null && parent.getLabel() != null) {
                 return new TextFragment(fragment.getLabel(), fragment.getValue());

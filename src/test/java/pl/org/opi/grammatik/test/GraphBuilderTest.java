@@ -3,6 +3,7 @@ package pl.org.opi.grammatik.test;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
 import pl.org.opi.grammatik.model.output.Text;
+import pl.org.opi.grammatik.model.output.TextFragment;
 import pl.org.opi.grammatik.parser.Graph;
 import pl.org.opi.grammatik.parser.GraphBuilder;
 import pl.org.opi.grammatik.utils.RandomUtils;
@@ -30,6 +31,6 @@ public class GraphBuilderTest {
         String[] cities = new String[]{"new york", "atlanta", "san francisco", "paris", "rome", "berlin", "barcelona"};
         if("usa".equalsIgnoreCase(location)) cities = ArrayUtils.subarray(cities, 0, 3);
         else if("europe".equalsIgnoreCase(location)) cities = ArrayUtils.subarray(cities, 3, cities.length);
-        return Text.of(RandomUtils.randomChoice(cities), "city");
+        return Text.builder(new TextFragment("city", RandomUtils.randomChoice(cities))).build();
     }
 }
