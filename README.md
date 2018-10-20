@@ -19,7 +19,7 @@ Next, add a dependency to the tagged release on github:
 <dependency>
   <groupId>com.github.sdadas</groupId>
   <artifactId>grammatik</artifactId>
-  <version>0.1</version>
+  <version>0.3</version>
 </dependency>
 ```
 
